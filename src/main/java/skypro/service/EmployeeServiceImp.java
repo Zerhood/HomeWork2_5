@@ -19,7 +19,9 @@ public class EmployeeServiceImp implements EmployeeService {
         if (employees.size() >= maxCountEmployee) {
             throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
         }
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee();
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
         if (employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException("добавляемый сотрудник уже имеется");
         } else {
@@ -29,7 +31,9 @@ public class EmployeeServiceImp implements EmployeeService {
     }
 
     public Employee deleteEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee();
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
         if (!employees.contains(employee)) {
             throw new EmployeeNotFoundException("сотрудник не найден");
         }
@@ -38,7 +42,9 @@ public class EmployeeServiceImp implements EmployeeService {
     }
 
     public Employee searchEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee();
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
         if (!employees.contains(employee)) {
             throw new EmployeeNotFoundException("сотрудник не найден");
         }
