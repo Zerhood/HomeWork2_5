@@ -8,6 +8,7 @@ import skypro.dto.Employee;
 import skypro.service.DepartmentService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/departments")
@@ -30,11 +31,12 @@ public class DepartmentController {
     }
 
     @GetMapping("/all")
+    public Map<Integer, List<Employee>> getAllEmpByDepartment() {
+        return departmentService.getAllEmpByDepartment();
+    }
+
+    @GetMapping(value = "/all", params = {"departmentId"})
     public List<Employee> getNameEmployeesInDepartment(@RequestParam(value = "departmentId", required = false, defaultValue = "0") Integer department) {
-        if (department != 0) {
-            return departmentService.getNameEmployeesInDepartment(department);
-        } else {
-            return departmentService.getAllEmpByDepartment();
-        }
+        return departmentService.getNameEmployeesInDepartment(department);
     }
 }

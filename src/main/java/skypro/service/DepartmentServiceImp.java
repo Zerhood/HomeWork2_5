@@ -5,6 +5,7 @@ import skypro.dto.Employee;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,9 +41,8 @@ public class DepartmentServiceImp implements DepartmentService{
     }
 
     @Override
-    public List<Employee> getAllEmpByDepartment() {
+    public Map<Integer, List<Employee>> getAllEmpByDepartment() {
         return employeeService.getAllEmployees().stream()
-                .sorted(Comparator.comparing(Employee::getDepartment))
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(Employee::getDepartment));
     }
 }
