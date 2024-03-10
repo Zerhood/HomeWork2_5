@@ -1,8 +1,11 @@
 package skypro.service;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import skypro.dto.Employee;
 import skypro.exceptions.EmployeeAlreadyAddedException;
+import skypro.exceptions.EmployeeNonMatchException;
 import skypro.exceptions.EmployeeNotFoundException;
 import skypro.exceptions.EmployeeStorageIsFullException;
 
@@ -19,6 +22,14 @@ public class EmployeeServiceImp implements EmployeeService {
         if (employees.size() >= maxCountEmployee) {
             throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
         }
+
+        if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
+            throw new EmployeeNonMatchException("Фамилия или имя не соответствует формату данных!");
+        }
+
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
+
         Employee employee = new Employee();
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
