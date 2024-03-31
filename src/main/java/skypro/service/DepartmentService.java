@@ -10,4 +10,7 @@ public interface DepartmentService {
     Employee getEmpMinSalaryInDepartment(int department);
     List<Employee> getNameEmployeesInDepartment(int department);
     Map<Integer, List<Employee>> getAllEmpByDepartment();
+    Integer getSumSalaryInDepartment(int id);
+    Integer getMaxSalaryInDepartment(int id);
+    Integer getMinSalaryInDepartment(int id);
 }
