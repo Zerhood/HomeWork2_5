@@ -1,7 +1,6 @@
 package skypro.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import skypro.dto.Employee;
 import skypro.exceptions.EmployeeAlreadyAddedException;
@@ -18,12 +17,12 @@ public class EmployeeServiceImp implements EmployeeService {
 
     private List<Employee> employees = new ArrayList<>();
 
-    public Employee addEmployee(String firstName, String lastName, Integer department, Integer salary) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
+    public Employee addEmployee(String firstName, String lastName, Integer department, Integer salary) {
         if (employees.size() >= maxCountEmployee) {
             throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
         }
 
-        if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
+        if (!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)) {
             throw new EmployeeNonMatchException("Фамилия или имя не соответствует формату данных!");
         }
 
@@ -44,24 +43,28 @@ public class EmployeeServiceImp implements EmployeeService {
     }
 
     public Employee deleteEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
-        Employee employee = new Employee();
-        employee.setFirstName(firstName);
-        employee.setLastName(lastName);
-        if (!employees.contains(employee)) {
+        Employee expected = employees.stream()
+                .filter(s -> s.getFirstName().equals(firstName))
+                .filter(s -> s.getLastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
+        if (expected == null) {
             throw new EmployeeNotFoundException("сотрудник не найден");
         }
-        employees.remove(employee);
-        return employee;
+        employees.remove(expected);
+        return expected;
     }
 
     public Employee searchEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
-        Employee employee = new Employee();
-        employee.setFirstName(firstName);
-        employee.setLastName(lastName);
-        if (!employees.contains(employee)) {
+        Employee expected = employees.stream()
+                .filter(s -> s.getFirstName().equals(firstName))
+                .filter(s -> s.getLastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
+        if (expected == null) {
             throw new EmployeeNotFoundException("сотрудник не найден");
         }
-        return employee;
+        return expected;
     }
 
     @Override
